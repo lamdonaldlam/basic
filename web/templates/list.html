@@ -1,0 +1,54 @@
+{% extends "structure.html" %}
+{% block title %}
+ Item List
+{% endblock %}
+{% block content %}
+<h1>Search Data: </h1>
+<div class="my-3">
+    <div class="mx-3">
+        <label>Name</label><input type="text" id="input" onkeyup="filter()" placeholder="Search">
+    </div>
+</div>
+<table class="table" id="item_list">
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Type</th>
+        <th>QTY</th>
+        <th>Modify</th>
+        <th>PDF</th>
+    </tr>
+    {% for item in items %}
+    <tr>
+        <td>{{item.id}}</td>
+        <td>{{item.product_name}}</td>
+        <td>{{item.product_type}}</td>
+        <td>{{item.qty}}</td>
+        <td><a href="{{url_for('modify', id= item.id)}}">Modify</a></td>
+        <td><a href="{{url_for('pdf',id= item.id)}}"  target="_blank">Download</a></td>
+    </tr>
+
+    {% endfor %}
+</table>
+
+<script>
+function filter(){
+    var input, filter, table, tr, td, i, txtValue;
+    input = document.getElementById("input");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("item_list");
+    tr = table.getElementsByTagName("tr");
+
+    for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[1];
+        if (td) {
+          txtValue = td.textContent || td.innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+          } else {
+            tr[i].style.display = "none";
+          }
+        }
+      }}
+</script>
+{% endblock %}
