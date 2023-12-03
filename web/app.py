@@ -95,13 +95,16 @@ def pdf(id):
     product_table = cursor.fetchone()
     pdf=FPDF('P','mm','A4')
     pdf.add_page()
-    pdf.set_font('helvetica','',16)
-    pdf.cell(120,10,'Name:'+product_table['product_name'])
-    pdf.cell(120,10,'Type:'+product_table['product_type'])
+    pdf.set_font('helvetica','U',16)
+    pdf.cell(80,10,'Name: '+product_table['product_name'])
+    pdf.cell(80,10,'Type: '+product_table['product_type'], ln=True)
+    pdf.cell(80,10, 'Qty: '+str(product_table['qty']))
+    pdf.cell(80,10, 'Date: '+str(product_table['last_modify_date']),ln=True)
+    pdf.cell(120,10, 'Remark: '+product_table['remark'])
     filename= 'Product'+str(product_table['id'])+'.pdf'
     pdf.output(filename)
     cursor.close()
-    return pdf.output(filename)
+    return send_file(filename)
 
 @app.route('/logout')
 def logout():
